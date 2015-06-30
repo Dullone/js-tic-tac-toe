@@ -75,6 +75,17 @@ var board = (function() {
     return _board_array.length;
   }
 
+  var boardFull = function(){
+    for (var i = _board_array.length - 1; i >= 0; i--) {
+      for (var j = _board_array.length - 1; j >= 0; j--) {
+        if(_board_array[i][j] === ''){
+          return false;
+        }
+      };
+    };
+    return true;
+  };
+
   return{
     init: init,
     addMark: addMark,
@@ -82,6 +93,7 @@ var board = (function() {
     getRow: getRow,
     getDiagonal: getDiagonal,
     size: size,
+    boardFull: boardFull,
   }
 
 })();
@@ -105,6 +117,9 @@ var ticTacToeGame = (function(){
       if(checkForWin()) {
         victory();
       }
+      if(_board.boardFull()) {
+        draw();
+      }
       switchTurns();
       _board.getColumn(1);
     }  
@@ -113,6 +128,10 @@ var ticTacToeGame = (function(){
   var victory = function() {
     $('#victory').text('Victory ' + _player + '!');
     $('#board div .game-square').unbind('click');
+  };
+
+  var draw = function() {
+    $('#victory').text('Draw!');
   };
 
   var switchTurns = function() {
