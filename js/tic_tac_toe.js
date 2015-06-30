@@ -10,13 +10,13 @@ var board = (function() {
     _board_array =  [   ['', '', ''],
                         ['', '', ''],
                         ['', '', '']];
+    $('.game-square').text('');
   };
 
   var addMark = function(id, mark){
     var loc = divIdToArrayLocation(id);
     
     if(slotOccupied(loc)){
-      console.log("occupied: " + loc);
       return false;
     }
 
@@ -96,17 +96,23 @@ var ticTacToeGame = (function(){
     _board = board;
     _player = PLAYER_ONE;
     $('#board div .game-square').click(clickBoard.bind(this));
+    $('#victory').text('');
   };
 
   var clickBoard = function(event){
     //if we recieve false, mark was not added
     if(_board.addMark(event.currentTarget.id, _player)) {
       if(checkForWin()) {
-        console.log('win!');
+        victory();
       }
       switchTurns();
       _board.getColumn(1);
     }  
+  };
+
+  var victory = function() {
+    $('#victory').text('Victory ' + _player + '!');
+    $('#board div .game-square').unbind('click');
   };
 
   var switchTurns = function() {
@@ -118,7 +124,6 @@ var ticTacToeGame = (function(){
   };
 
   var checkForWin = function() {
-    console.log('_______________________')
     //rows
     for (var i = _board.size() - 1; i >= 0; i--) {
       if(arrayHasWin(_board.getRow(i))) {
@@ -140,7 +145,6 @@ var ticTacToeGame = (function(){
   };
 
   var arrayHasWin = function(ar){
-    //console.log(ar);
     for (var i = ar.length - 1; i >= 1; i--) {
       if(ar[i] !== ar[i-1] || ar[i] === ''){
         return false
@@ -157,6 +161,12 @@ var ticTacToeGame = (function(){
 })();
 
 $(document).ready(function() {
-  board.init();
-  ticTacToeGame.init(board);
+  var newGame = function(){ 
+    board.init();
+    ticTacToeGame.init(board);
+  };
+
+  newGame();
+
+  $('#new-game').click(newGame);
 });
