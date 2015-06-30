@@ -13,12 +13,17 @@ var board = (function() {
   };
 
   var addMark = function(id, mark){
-    console.log('id: ' + id + ', mark: ' + mark)
     var loc = divIdToArrayLocation(id);
-    console.log(_board_array);
-    console.log(loc);
+    
+    if(slotOccupied(loc)){
+      console.log("occupied: " + loc);
+      return false;
+    }
+
     _board_array[loc[0]][loc[1]] = mark;
     addMarkToHtmlBoard(id, mark);
+
+    return true;
   };
 
   var divIdToArrayLocation = function(id){
@@ -30,6 +35,14 @@ var board = (function() {
 
   var addMarkToHtmlBoard = function(id, mark){
     $('#' + id).text(mark);
+  };
+
+  var slotOccupied = function(loc){
+    if(_board_array[loc[0]][loc[1]] !== ''){
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return{
