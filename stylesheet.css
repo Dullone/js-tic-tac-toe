@@ -1,0 +1,40 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.container{
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #eee;
+	padding: 20px;
+}
+
+#board{
+	font-size: 50px;
+	width: 3.45em;
+	height: 3.45em;
+	background-color: #eee;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.row{
+	width: 100%;
+	overflow: auto;
+}
+.game-square{
+	text-align: center;
+	width: 1.15em;
+	height: 1.15em;
+	line-height: 1.15em;
+	background-color: white;
+	border: 1px solid;
+	border-color: #444;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
