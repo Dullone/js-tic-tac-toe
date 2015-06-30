@@ -54,17 +54,29 @@ var board = (function() {
 
 var ticTacToeGame = (function(){
   var _board;
+  const PLAYER_ONE = 'X';
+  const PLAYER_TWO = 'O';
   var _player;
 
   var init = function(board){
     _board = board;
-    _player = 'X';
+    _player = PLAYER_ONE;
     $('#board div .game-square').click(clickBoard.bind(this));
   };
 
   var clickBoard = function(event){
-    _board.addMark(event.currentTarget.id, _player);
-    //console.log(event.currentTarget.id);
+    //if we recieve false, mark was not added
+    if(_board.addMark(event.currentTarget.id, _player)) {
+      switchTurns();
+    }  
+  };
+
+  var switchTurns = function() {
+    if(_player === PLAYER_ONE) {
+      _player = PLAYER_TWO;
+    } else {
+      _player = PLAYER_ONE;
+    }
   };
 
   return{
