@@ -37,6 +37,32 @@ var board = (function() {
     $('#' + id).text(mark);
   };
 
+  var getRow = function(row) {
+    return _board_array[row];
+  };
+
+  var getColumn = function(col) {
+    var column = _board_array.map(function(val, idx) { return val[col]; } );
+    return column;
+  };
+
+  var getDiagonal = function(diag){
+    var ar = [];
+    //upper right to lower left
+    if(diag === 1){
+      for (var i = 0; i < _board_array.length; i++) {
+        ar.push(_board_array[i][_board_array.length - 1 - i])
+      };
+    }
+    //upper left to lower right
+    if(diag === 0){
+      for (var i = 0; i < _board_array.length; i++) {
+        ar.push(_board_array[i][i])
+      };
+    }
+   return ar;
+  };
+
   var slotOccupied = function(loc){
     if(_board_array[loc[0]][loc[1]] !== ''){
       return true;
@@ -45,9 +71,17 @@ var board = (function() {
     }
   };
 
+  var size = function(){
+    return _board_array.length;
+  }
+
   return{
     init: init,
     addMark: addMark,
+    getColumn: getColumn,
+    getRow: getRow,
+    getDiagonal: getDiagonal,
+    size: size,
   }
 
 })();
@@ -67,7 +101,11 @@ var ticTacToeGame = (function(){
   var clickBoard = function(event){
     //if we recieve false, mark was not added
     if(_board.addMark(event.currentTarget.id, _player)) {
+      if(checkForWin()) {
+        console.log('win!');
+      }
       switchTurns();
+      _board.getColumn(1);
     }  
   };
 
@@ -77,6 +115,39 @@ var ticTacToeGame = (function(){
     } else {
       _player = PLAYER_ONE;
     }
+  };
+
+  var checkForWin = function() {
+    console.log('_______________________')
+    //rows
+    for (var i = _board.size() - 1; i >= 0; i--) {
+      if(arrayHasWin(_board.getRow(i))) {
+        return true;
+      }
+    };
+
+    //columns
+    for (var i = _board.size() - 1; i >= 0; i--) {
+      if(arrayHasWin(_board.getColumn(i))) {
+        return true;
+      }
+    };
+    //diag
+    if(arrayHasWin(_board.getDiagonal(0)) || arrayHasWin(_board.getDiagonal(1))) {
+      return true;
+    }
+    return false;
+  };
+
+  var arrayHasWin = function(ar){
+    //console.log(ar);
+    for (var i = ar.length - 1; i >= 1; i--) {
+      if(ar[i] !== ar[i-1] || ar[i] === ''){
+        return false
+      }
+    };
+
+    return true;
   };
 
   return{
